@@ -12,8 +12,8 @@ export interface Pokemon {
         id: number,
         name: string,
         type: string,
-        power: number,
-        accuracy: number,
+        power: number | null,
+        accuracy: number | null,
         description: string
     }
 }
