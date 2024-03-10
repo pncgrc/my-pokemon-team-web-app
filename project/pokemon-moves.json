@@ -16,7 +16,7 @@
         "description": "A strong electric blast crashes down on the target. This may also leave the target with paralysis."
     },
     {
-        "id": 6,
+        "id": 2,
         "name": "Gust",
         "type": "flying",
         "power": 40,
@@ -27,8 +27,8 @@
         "id": 7,
         "name": "Transform",
         "type": "normal",
-        "power": null,
-        "accuracy": null,
+        "power": 0,
+        "accuracy": 0,
         "description": "The user transforms into a copy of the target right down to having the same move set."
     },
     {
@@ -52,7 +52,7 @@
         "name": "Splash",
         "type": "water",
         "power": 0,
-        "accuracy": null,
+        "accuracy": 0,
         "description": "The user just flops and splashes around to no effect at all..."
     },
     {
