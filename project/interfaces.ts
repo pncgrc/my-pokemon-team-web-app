@@ -17,12 +17,3 @@ export interface Pokemon {
         description: string
     }
 }
-
-/*export interface PokemonMoves {
-    id: number,
-    name: string,
-    type: string,
-    power: number,
-    accuracy: number,
-    description: string
-}*/
