@@ -17,8 +17,8 @@ async function FetchAndDisplayPokemonData() {
         return pokemonData.filter(pokemon => pokemon.id == pokemonID);
     }
 
-    const isIDValid = (id: number): boolean => {
-        return pokeData.some(pokemon => pokemon.id == id);
+    const IsIDValid = (pokemonData: Pokemon[], id: number): boolean => {
+        return pokemonData.some(pokemon => pokemon.id == id);
     }
     
     while (true) {
@@ -31,7 +31,7 @@ async function FetchAndDisplayPokemonData() {
             DisplayData(pokeData);
         } else if (userAnswer == 2) {
             let userAnswerID = rls.questionInt("Please enter the ID you want to filter by: ");
-            if(isIDValid(userAnswerID)) {
+            if(IsIDValid(pokeData, userAnswerID)) {
                 let FilteredPokemon = FilterData(pokeData, userAnswerID);
                 console.log(`\n- Name: ${FilteredPokemon[0].name} (${FilteredPokemon[0].id})`);
                 console.log(`  - Type: ${FilteredPokemon[0].type}`);
