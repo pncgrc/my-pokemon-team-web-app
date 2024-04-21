@@ -1,0 +1,28 @@
+<%- include("./partials/header") %>
+<!--<form action="/" method="GET">
+    <label for="search">Search Pokémon:</label>
+    <input type="text" id="search" name="q" value="<%= q %>">
+    <button type="submit">Search</button>
+</form>-->
+<table>
+    <tr>
+        <th>Pokédex ID</th>
+        <th>Picture</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Meta pick</th>
+        <th>Details</th>
+    </tr>
+    <% for(let pokemon of pokeData) { %>
+        <tr>
+            <td><%= pokemon.order %></td>
+            <td><img src="<%= pokemon.imageUrl %>" alt="<%= pokemon.name %>" width="75px"></td>
+            <td><%= pokemon.name %></td>
+            <td><%= pokemon.type %></td>
+            <td><%= pokemon.active %></td>
+            <td><a href="">More details</a></td>
+        </tr>
+    <% } %>
+</table>
+
+<%- include("./partials/footer") %>
