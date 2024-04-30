@@ -8,12 +8,14 @@ export interface Pokemon {
     imageUrl: string,
     type: string,
     hobbies: string[],
-    favoriteMove: {
-        id: number,
-        name: string,
-        type: string,
-        power: number | null,
-        accuracy: number | null,
-        description: string
-    }
+    favoriteAbility: Ability
+}
+
+export interface Ability {
+    id: number,
+    name: string,
+    type: string,
+    power: number | null,
+    accuracy: number | null,
+    description: string
 }
