@@ -1,12 +1,14 @@
 import express from "express";
 import { Pokemon, Ability } from "./interfaces/pokemon-interfaces";
-import { DBConnect, GetPokemon, GetPokemonTeamAbilities, GetPokemonByName, GetAbilityByName } from "./database";
+import { DBConnect, GetPokemon, GetAbilities, GetPokemonTeamAbilities, GetPokemonByName, GetAbilityOnPokemonByName, GetAbilityFromAbilityDBByName, UpdatePokemon } from "./database";
 import dotenv from "dotenv";
 
 const app = express();
 dotenv.config();
 
 app.set("view engine", "ejs");
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended:true}));
 app.set("port", process.env.PORT || 3000);
 app.use(express.static("public"));
 
@@ -61,7 +63,7 @@ app.get("/pokemon/:pokemonname", async (req, res) => {
     const filteredPokeData: Pokemon | null = await GetPokemonByName(pokemonName);
 
     if (filteredPokeData === null) {
-        res.status(404).render("404");
+        res.status(404).render("404", { message: "Pokémon not found" });
     }
     else {
         res.render("pokemon-detail", {
@@ -79,10 +81,10 @@ app.get("/abilities", async (req, res) => {
 app.get("/abilities/:abilityname", async (req, res) => {
     const abilityName = req.params.abilityname;
 
-    const filteredPokeData: Pokemon | null = await GetAbilityByName(abilityName);
+    const filteredPokeData: Pokemon | null = await GetAbilityOnPokemonByName(abilityName);
 
     if (filteredPokeData === null) {
-        res.status(404).render("404");
+        res.status(404).render("404", { message: "Ability not found" });
     }
     else {
         res.render("ability-detail", {
@@ -95,19 +97,47 @@ app.get("/edit/:pokemonname", async (req, res) => {
     const chosenPokemon = req.params.pokemonname;
 
     const filteredPokeData: Pokemon | null = await GetPokemonByName(chosenPokemon);
+    const availableAbilities: Ability[] = await GetAbilities();
 
-    res.render("edit", { pokeData: filteredPokeData });
+    res.render("edit", {
+        pokeData: filteredPokeData,
+        abilityData: availableAbilities,
+        error: ""
+    });
+});
 
+app.post("/edit/:pokemonname", async (req, res) => {
+    const chosenPokemon = req.params.pokemonname;
+    const filteredPokeData: Pokemon | null = await GetPokemonByName(chosenPokemon);
+    const availableAbilities: Ability[] = await GetAbilities();
+
+    let nickname: string = req.body.nickname;
+    let description: string = req.body.description;
+    let meta: boolean = req.body.meta === "Yes" ? true : false;
+    let ability: string = req.body.ability;
+
+    const updatedAbility: Ability | null = await GetAbilityFromAbilityDBByName(ability);
+
+    if (nickname === "" || description === "") {
+        res.render("edit", { 
+            pokeData: filteredPokeData,
+            abilityData: availableAbilities,
+            error: "All fields are required!"} );
+    }
+    else if (updatedAbility === null) {
+        res.status(404).render("404", { message: "Something went wrong" });
+    } else {
+        UpdatePokemon(chosenPokemon, nickname, description, meta, updatedAbility);
+        res.redirect("/pokemon/" + chosenPokemon);
+    }
 });
 
 
 app.use((req, res, next) => {
-    res.status(404).render("404");
+    res.status(404).render("404", { message: "Page not found" });
 });
 
 app.listen(app.get("port"), async () => {
-    /*const response = await fetch("https://raw.githubusercontent.com/AP-G-1PRO-Webontwikkeling/project-webontwikkeling-pncgrc/main/project/pokemon.json");
-    pokeData = await response.json();*/
     await DBConnect();
     console.log( "[server] http://localhost:" + app.get("port"));
 });

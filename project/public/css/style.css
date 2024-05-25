@@ -28,6 +28,10 @@ body {
     margin: 0;
 }
 
+h2 {
+    width: 100%;
+}
+
 p {
     margin: 0;
 }
@@ -278,6 +282,42 @@ button:active {
 
 .ability-detail li:not(:last-child) {
     border-bottom: 1px solid #ddd;
+}
+
+/* EDIT */
+
+.error {
+    padding: 15px;
+    background-color: #ff756b;
+}
+
+#edit-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin-top: 15px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.form-group label {
+    width: 250px;
+    margin-right: 10px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    flex: 1;
+}
+
+button[type="submit"] {
+    align-self: flex-end;
+    margin: 15px 0;
 }
 
 /* TYPES */

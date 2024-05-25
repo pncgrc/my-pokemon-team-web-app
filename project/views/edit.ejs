@@ -1,9 +1,44 @@
 <%- include("./partials/header") %>
 
 <section>
+    <% if (error != "") { %>
+        <p class="error"><%= error %></p>
+    <% } %>
     <h2>Editing: #<%= pokeData.order %> <%= pokeData.name%></h2>
     <img src="<%= pokeData.imageUrl %>" alt="<%= pokeData.name%>" width="250px">
 
+    <form action="/edit/<%= pokeData.name %>" method="POST" id="edit-form">
+        <div class="form-group">
+            <label for="nickname">Nickname:</label>
+            <input type="text" id="nickname" name="nickname">
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" cols="50"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="meta-pick">Meta?</label>
+            <select id="meta" name="meta" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="ability">Change move:</label>
+            <select id="ability" name="ability" required>
+                <% for (let ability of abilityData) { %>
+                    <% if (ability.type === pokeData.type) { %>
+                    <option value="<%= ability.name %>"><%= ability.name %></option>
+                    <% } %>
+                <% } %>
+            </select>
+        </div>
+        
+        <button type="submit">Submit</button>
+    </form>
     
 
 </section>
