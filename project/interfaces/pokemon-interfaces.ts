@@ -1,10 +1,10 @@
 export interface Pokemon {
     id: number,
     name: string,
+    nickname: string,
     description: string,
     order: number,
     active: boolean,
-    birthdate: string,
     imageUrl: string,
     type: string,
     hobbies: string[],
