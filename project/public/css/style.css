@@ -1,3 +1,422 @@
-td {
-    padding: 0.3rem 1rem;
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --main-color-yellow: #FCCF00;
+    --main-color-blue: #2468B1;
+    --type-color-water: #4592c4;
+    --type-color-bug: #729f3f;
+    --type-color-normal: #a4acaf;
+    --type-color-electric: #eed535;
+    --type-color-fairy: #fdb9e9;
+    --type-color-poison: #b97fc9;
+    --type-color-rock: #a38c21;
+}
+
+html, body {
+    height: 100vh;
+}
+
+body {
+    background-color: #F5F5F5;
+    font-family: 'Press Start 2P', cursive;
+    color: #333;
+    text-align: center;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    color: var(--main-color-blue);
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    text-decoration: underline;
+}
+
+/* HEADER & NAV */
+
+header {
+    padding: 1.5rem calc((100% - 1200px)/2);
+    display: flex;
+    background-color: white;
+}
+
+#logo {
+    width: 120px;
+    margin-right: 2rem;
+}
+
+header h1 {
+    margin: auto 0;
+}
+
+nav {
+    background-color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul li a {
+    color: var(--main-color-yellow);
+    display: inline-block;
+    text-decoration: none;
+    padding: 20px;
+    font-size: 1.2em;
+}
+
+nav ul li a:hover {
+    background-color: var(--main-color-blue);
+    color: var(--main-color-yellow);
+    text-decoration: none;
+}
+
+/* MAIN */
+
+main {
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+}
+
+footer {
+    background-color: #333;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 9px;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+/* INDEX */
+
+button {
+    border: 3px solid var(--main-color-blue);
+    border-radius: 5px;
+    background-color: var(--main-color-yellow);
+    font-family: 'Press Start 2P', cursive;
+    padding: 5px 15px;
+    color: var(--main-color-blue);
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button:active {
+    transform: translateY(2px);
+}
+
+.pokemon-table {
+    width: 100%;
+    margin: 50px auto;
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.pokemon-table thead {
+    background-color: var(--main-color-yellow);
+}
+
+.pokemon-table thead th {
+    padding: 1rem;
+    margin: 0 1rem;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 1rem;
+    border-bottom: 2px solid #ddd;
+}
+
+.pokemon-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.pokemon-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.pokemon-table tbody td {
+    padding: 15px 0;
+    color: #555;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.pokemon-table tbody td:nth-child(4) {
+    text-transform: capitalize;
+}
+
+.pokemon-table tbody tr:hover {
+    background-color: #d9eafb;
+    color: #000;
+}
+
+.pokemon-table tbody tr:hover td {
+    color: #000;
+}
+
+
+/* POKEMON DETAIL */
+
+.pokemon-detail h2 {
+    color: #333;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.pokemon-detail img {
+    width: 250px;
+    margin: 20px auto 20px auto;
+}
+
+.pokemon-detail ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.pokemon-detail ul > li {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    margin: 10px auto;
+    padding: 10px;
+    width: 60%;
+    text-align: left;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pokemon-detail ul ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.pokemon-detail ul ul > li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+/* ABILITIES */
+
+.article-ability {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    flex: 1 1 280px;
+    max-width: 350px;
+}
+
+.article-ability ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.article-ability ul li {
+    background-color: #fafafa;
+    color: #333;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ABILITIES DETAIL */
+
+.ability-detail {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.ability-detail h2 {
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.ability-detail ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ability-detail li {
+    padding: 10px 0;
+}
+
+.ability-detail li:not(:last-child) {
+    border-bottom: 1px solid #ddd;
+}
+
+/* TYPES */
+
+.type {
+    display: inline-block;
+    width: 100%;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 11px;
+    text-align: center;
+    color: black;
+}
+
+.water {
+    background-color: var(--type-color-water);
+    color: white;
+}
+
+.bug {
+    background-color: var(--type-color-bug);
+    color: white;
+}
+
+.flying {
+    background: linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+}
+
+.normal {
+    background-color: var(--type-color-normal);
+}
+
+.electric {
+    background-color: var(--type-color-electric);
+}
+
+.fairy {
+    background-color: var(--type-color-fairy);
+}
+
+.poison {
+    background-color: var(--type-color-poison);
+    color: white;
+}
+
+.rock {
+    background-color: var(--type-color-rock);
+    color:  white;
+}
+
+/* RANDOM CLASS */
+
+.img-block {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+}
+
+/* MEDIA QUERIES */
+
+@media (max-width: 730px) {
+
+    header {
+        padding: 1rem;
+    }
+
+    #logo {
+        width: 90px;
+        margin-right: 1rem;
+    }
+    
+    header h1 {
+        font-size: 1rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav li, nav li a {
+        width: 100%;
+    }
+
+    .pokemon-detail ul > li {
+        width: 90%;
+    }
+
+    article {
+        flex: 1 1 100%;
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    article ul li {
+        margin: 5px 0;
+        padding: 8px;
+    }
+
+    table {
+        border: 0;
+      }
+      
+      table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+      
+      table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      
+      table td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+      }
+      
+      table td::before {
+        content: attr(data-label);
+        float: left;
+        transform: translateX(10px);
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .type {
+        width: 50%;
+      }
 }

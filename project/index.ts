@@ -1,96 +1,113 @@
 import express from "express";
 import { Pokemon, Ability } from "./interfaces/pokemon-interfaces";
+import { DBConnect, GetPokemon, GetPokemonTeamAbilities, GetPokemonByName, GetAbilityByName } from "./database";
+import dotenv from "dotenv";
 
 const app = express();
+dotenv.config();
 
 app.set("view engine", "ejs");
-app.set("port", 3000);
+app.set("port", process.env.PORT || 3000);
 app.use(express.static("public"));
 
-async function fetchData() {
-    const response = await fetch("https://raw.githubusercontent.com/AP-G-1PRO-Webontwikkeling/project-webontwikkeling-pncgrc/main/project/pokemon.json");
-    const data: Pokemon[] = await response.json();
-    return data;
-}
+let pokeData: Pokemon[] = [];
 
 app.get("/", async (req, res) => {
-    let pokeData: Pokemon[] = await fetchData();
-    let q: string = "";
-    if (typeof req.query.q === "string") {
-        q = req.query.q;
-    }
-    pokeData = pokeData.filter((pokemon) => {
+    pokeData = await GetPokemon();
+
+    const q: string = typeof req.query.q === "string" ? req.query.q : "";
+    const sortBy: string = typeof req.query.sortby === "string" ? req.query.sortby : "id";
+    const sortDirection: string = typeof req.query.sortDirection === "string" ? req.query.sortDirection : "asc";
+
+    let filteredPokeData = pokeData;
+
+    filteredPokeData = filteredPokeData.filter((pokemon) => {
         return pokemon.name.toLowerCase().includes(q.toLowerCase());
-    })
+    });
+
+    filteredPokeData = filteredPokeData.sort((a, b) => {
+        if (sortBy === "id") {
+            return sortDirection === "asc" ? a.order - b.order : b.order - a.order;
+        }
+        else if (sortBy === "name") {
+            return sortDirection === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        }
+        else if (sortBy === "type") {
+            return sortDirection === "asc" ? a.type.localeCompare(b.type) : b.type.localeCompare(a.type);
+        }
+        else if (sortBy === "meta") {
+            if (sortDirection === "asc") {
+                return a.active === b.active ? 0 : a.active ? -1 : 1;
+            } else {
+                return a.active === b.active ? 0 : a.active ? 1 : -1;
+            }
+        }
+        else {
+            return 0;
+        }
+    });
+
     res.render("index", {
-        pokeData: pokeData,
-        q: q
+        pokeData: filteredPokeData,
+        q: q,
+        sortby: sortBy,
+        sortdirection: sortDirection
     });
 });
 
 app.get("/pokemon/:pokemonname", async (req, res) => {
     const pokemonName = req.params.pokemonname;
-    let pokeData: Pokemon[] = await fetchData();
 
-    console.log(pokeData);
-    pokeData = pokeData.filter((pokemon) => {
-        return pokemon.name.toLowerCase().match(pokemonName.toLowerCase());
-    })
+    const filteredPokeData: Pokemon | null = await GetPokemonByName(pokemonName);
 
-    res.render("pokemon-detail", {
-        pokeData: pokeData
-    })
+    if (filteredPokeData === null) {
+        res.status(404).render("404");
+    }
+    else {
+        res.render("pokemon-detail", {
+            pokeData: filteredPokeData
+        });
+    }
 });
 
 app.get("/abilities", async (req, res) => {
-    let pokeData: Pokemon[] = await fetchData();
-    let pokeAbilities: Ability[] = [];
+    const pokeAbilities: Ability[] = await GetPokemonTeamAbilities();
 
-    console.log(pokeData);
-
-    for (let pokemon of pokeData) {
-        pokeAbilities.push(pokemon.favoriteAbility);
-    }
-
-    res.json(pokeAbilities);
+    res.render("pokemon-abilities", { pokeAbilities });
 });
 
-/* app.get("/sort", async (req, res) => {
-    let pokeData: Pokemon[] = await fetchData();
-    let q: string = "";
-    let sortby: string = "";
-    if (typeof req.query.q === "string") {
-        q = req.query.q;
-    }
-    if (typeof req.query.sortby === "string") {
-        sortby = req.query.sortby;
-    }
-    if (req.query.sortby === "id") {
-        pokeData = pokeData.sort((a, b) => {
-            if (a.order > b.order) { return 1; }
-            else if (a.order < b.order) { return -1; }
-            else { return 0; }
-        });
-    }
-    else if (req.query.sortby === "name") {
-        pokeData = pokeData.sort((a, b) => {
-            if (a.name > b.name) { return 1; }
-            else if (a.name < b.name) { return -1; }
-            else { return 0; }
-        });
-    }
-    else if (req.query.sortby === "type") {
-        pokeData = pokeData.sort((a, b) => {
-            if (a.type > b.type) { return 1; }
-            else if (a.type < b.type) { return -1; }
-            else { return 0; }
-        });
-    }
-    
-    res.render("index", {
-        pokeData: pokeData,
-        q: q
-    });
-}); */
+app.get("/abilities/:abilityname", async (req, res) => {
+    const abilityName = req.params.abilityname;
 
-app.listen(app.get("port"), ()=>console.log( "[server] http://localhost:" + app.get("port")));
+    const filteredPokeData: Pokemon | null = await GetAbilityByName(abilityName);
+
+    if (filteredPokeData === null) {
+        res.status(404).render("404");
+    }
+    else {
+        res.render("ability-detail", {
+            pokeData: filteredPokeData
+        });
+    }
+});
+
+app.get("/edit/:pokemonname", async (req, res) => {
+    const chosenPokemon = req.params.pokemonname;
+
+    const filteredPokeData: Pokemon | null = await GetPokemonByName(chosenPokemon);
+
+    res.render("edit", { pokeData: filteredPokeData });
+
+});
+
+
+app.use((req, res, next) => {
+    res.status(404).render("404");
+});
+
+app.listen(app.get("port"), async () => {
+    /*const response = await fetch("https://raw.githubusercontent.com/AP-G-1PRO-Webontwikkeling/project-webontwikkeling-pncgrc/main/project/pokemon.json");
+    pokeData = await response.json();*/
+    await DBConnect();
+    console.log( "[server] http://localhost:" + app.get("port"));
+});

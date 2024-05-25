@@ -1,0 +1,128 @@
+{
+    "water": [
+      {
+        "id": 55,
+        "name": "Water-gun",
+        "type": "water",
+        "power": 40,
+        "accuracy": 100,
+        "description": "The target is blasted with a forceful shot of water."
+      },
+      {
+        "id": 56,
+        "name": "Surf",
+        "type": "water",
+        "power": 90,
+        "accuracy": 100,
+        "description": "The user attacks everything around it by swamping its surroundings with a giant wave."
+      }
+    ],
+    "bug": [
+      {
+        "id": 81,
+        "name": "String-shot",
+        "type": "bug",
+        "power": null,
+        "accuracy": 95,
+        "description": "The opposing Pokémon are bound with silk blown from the user's mouth that harshly lowers the Speed stat."
+      },
+      {
+        "id": 450,
+        "name": "Bug-bite",
+        "type": "bug",
+        "power": 60,
+        "accuracy": 100,
+        "description": "The user bites the target. If the target is holding a Berry, the user eats it and gains its effect."
+      }
+    ],
+    "flying": [
+      {
+        "id": 16,
+        "name": "Gust",
+        "type": "flying",
+        "power": 40,
+        "accuracy": 100,
+        "description": "A gust of wind is whipped up by wings and launched at the target to inflict damage."
+      },
+      {
+        "id": 19,
+        "name": "Wing-attack",
+        "type": "flying",
+        "power": 60,
+        "accuracy": 100,
+        "description": "The target is struck with large, imposing wings spread wide to inflict damage."
+      }
+    ],
+    "electric": [
+      {
+        "id": 84,
+        "name": "Thunder-shock",
+        "type": "electric",
+        "power": 40,
+        "accuracy": 100,
+        "description": "A jolt of electricity crashes down on the target to inflict damage. This may also leave the target with paralysis."
+      },
+      {
+        "id": 85,
+        "name": "Thunderbolt",
+        "type": "electric",
+        "power": 90,
+        "accuracy": 100,
+        "description": "A strong electric blast crashes down on the target. This may also leave the target with paralysis."
+      }
+    ],
+    "fairy": [
+      {
+        "id": 574,
+        "name": "Dazzling-gleam",
+        "type": "fairy",
+        "power": 80,
+        "accuracy": 100,
+        "description": "The user damages opposing Pokémon by emitting a powerful flash."
+      },
+      {
+        "id": 585,
+        "name": "Moonblast",
+        "type": "fairy",
+        "power": 95,
+        "accuracy": 100,
+        "description": "Borrowing the power of the moon, the user attacks the target. This may also lower the target's Sp. Atk stat."
+      }
+    ],
+    "poison": [
+      {
+        "id": 92,
+        "name": "Poison-sting",
+        "type": "poison",
+        "power": 15,
+        "accuracy": 100,
+        "description": "The user stabs the target with a poisonous stinger. This may also poison the target."
+      },
+      {
+        "id": 188,
+        "name": "Sludge-bomb",
+        "type": "poison",
+        "power": 90,
+        "accuracy": 100,
+        "description": "Unsanitary sludge is hurled at the target. This may also poison the target."
+      }
+    ],
+    "rock": [
+      {
+        "id": 317,
+        "name": "Rock-throw",
+        "type": "rock",
+        "power": 50,
+        "accuracy": 90,
+        "description": "The user picks up and throws a small rock at the target to attack."
+      },
+      {
+        "id": 397,
+        "name": "Stone-edge",
+        "type": "rock",
+        "power": 100,
+        "accuracy": 80,
+        "description": "The user stabs the target with a sharp stone. Critical hits land more easily."
+      }
+    ]
+  }  

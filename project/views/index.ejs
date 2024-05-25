@@ -1,29 +1,34 @@
-<%- include("./partials/header") %>
+<%- include("./partials/header") %> 
+
 <form action="/" method="get">
     <label for="search">Search for a name:</label>
     <input type="text" id="search" name="q" value="<%= q %>">
     <button type="submit">Search</button>
 </form>
 
-<table>
-    <tr>
-        <th>Picture</th>
-        <th><a href="/sort?sortby=name">Name</a></th>
-        <th><a href="/sort?sortby=id">Pokédex ID</a></th>
-        <th><a href="/sort?sortby=type">Type</a></th>
-        <th>Meta pick</th>
-        <th>Details</th>
-    </tr>
-    <% for(let pokemon of pokeData) { %>
+<table class="pokemon-table">
+    <thead>
         <tr>
-            <td><img src="<%= pokemon.imageUrl %>" alt="<%= pokemon.name %>" width="75px"></td>
-            <td><%= pokemon.name %></td>
-            <td><%= pokemon.order %></td>
-            <td><%= pokemon.type %></td>
-            <td><%= pokemon.active %></td>
-            <td><a href="/pokemon/<%= pokemon.name %>">More details</a></td>
+            <th>Picture</th>
+            <th><a href="?q=<%= q %>&sortby=name&sortdirection=asc">Name</a></th>
+            <th><a href="?q=<%= q %>&sortby=id&sortdirection=asc">Pokédex ID</a></th>
+            <th><a href="?q=<%= q %>&sortby=type&sortdirection=asc">Type</a></th>
+            <th><a href="?q=<%= q %>&sortby=meta&sortdirection=asc">Meta pick</a></th>
+            <th>Edit</th>
         </tr>
-    <% } %>
+    </thead>
+    <tbody>
+        <% for(let pokemon of pokeData) { %>
+            <tr>                
+                <td data-label="Picture"><a href="/pokemon/<%= pokemon.name %>"><img src="<%= pokemon.imageUrl %>" alt="<%= pokemon.name %>" width="75px"></a></td>
+                <td data-label="Name"><a href="/pokemon/<%= pokemon.name %>"><%= pokemon.name %></a></td>
+                <td data-label="Pokédex ID"><%= pokemon.order %></td>
+                <td data-label="Type"><span class=" type <%= pokemon.type %>"><%= pokemon.type %></td>
+                <td data-label="Meta pick"><%= pokemon.active === true ? "Yes" : "No" %></td>
+                <td data-label="Edit info"><a href="edit/<%= pokemon.name %>">Edit</a></td>
+            </tr>
+        <% } %>
+    </tbody>
 </table>
 
 <%- include("./partials/footer") %>

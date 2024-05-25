@@ -1,0 +1,6 @@
+DONE: 404 PAGE (KO Pikachu img)
+FOLDER IMAGES HOSTEN
+
+DB Implementatie
+
+LOGIN SYSTEEM
