@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 dotenv.config();
 
 export const MONGODB_URI = process.env.MONGO_URI ?? "mongodb+srv://s080037:bRW1UPhSbMMGfqF2@project-webdev.od9yc1q.mongodb.net/";
-const client = new MongoClient(MONGODB_URI);
+export const client = new MongoClient(MONGODB_URI);
 
 /*** COLLECTION USERS ***/
 
@@ -126,7 +126,7 @@ async function DBExit() {
         await client.close();
         console.log("Disconnected from database");
     } catch (error) {
-        console.error(error);
+        console.error("Error while disconnecting from database:", error);
     }
     process.exit(0);
 }
@@ -136,10 +136,10 @@ export async function DBConnect() {
         await client.connect();
         await FillDatabase();
         await CreateInitialUsers();
-        console.log("OK WE GUCCI"); 
-        process.on("SIGINT", DBExit);
+        console.log("Successfully connected to the database"); 
+        process.on("SIGINT", DBExit); // Ctrl + C handling
     } catch (e) {
-        console.error(e);
+        console.error("Error connecting to the database:", e);
     }
 }
 
