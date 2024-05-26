@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface Pokemon {
     id: number,
     name: string,
@@ -18,4 +20,16 @@ export interface Ability {
     power: number | null,
     accuracy: number | null,
     description: string
+}
+
+export interface User {
+    _id?: ObjectId;
+    username: string;
+    password?: string;
+    role: "ADMIN" | "USER";
+}
+
+export interface FlashMessage {
+    type: "error" | "success"
+    message: string;
 }

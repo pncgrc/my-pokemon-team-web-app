@@ -1,4 +1,5 @@
 <%- include("./partials/header") %>
+<%- include("./partials/logout-section") %>
 
 <section>
     <% if (error != "") { %>
@@ -7,7 +8,7 @@
     <h2>Editing: #<%= pokeData.order %> <%= pokeData.name%></h2>
     <img src="<%= pokeData.imageUrl %>" alt="<%= pokeData.name%>" width="250px">
 
-    <form action="/edit/<%= pokeData.name %>" method="POST" id="edit-form">
+    <form action="/pokemon/<%= pokeData.name %>/edit" method="post" id="edit-form">
         <div class="form-group">
             <label for="nickname">Nickname:</label>
             <input type="text" id="nickname" name="nickname">

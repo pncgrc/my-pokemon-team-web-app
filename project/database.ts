@@ -1,17 +1,59 @@
-import { Pokemon, Ability } from "./interfaces/pokemon-interfaces";
+import { Pokemon, Ability, User } from "./interfaces/types";
 import { MongoClient, Collection } from "mongodb";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 
 dotenv.config();
 
-const client = new MongoClient(process.env.MONGO_URI || "mongodb+srv://s080037:bRW1UPhSbMMGfqF2@project-webdev.od9yc1q.mongodb.net/");
+export const MONGODB_URI = process.env.MONGO_URI ?? "mongodb+srv://s080037:bRW1UPhSbMMGfqF2@project-webdev.od9yc1q.mongodb.net/";
+const client = new MongoClient(MONGODB_URI);
+
+/*** COLLECTION USERS ***/
+
+const userCollection = client.db("login-express").collection<User>("users");
+
+const saltRounds: number = 10;
+
+async function createInitialUsers() {
+    if (await userCollection.countDocuments() > 0) {
+        return;
+    }
+    let adminUsername: string | undefined = process.env.ADMIN_USERNAME;
+    let adminPassword: string | undefined = process.env.ADMIN_PASSWORD;
+
+    let userUsername: string | undefined = process.env.USER_USERNAME;
+    let userPassword: string | undefined = process.env.USER_PASSWORD;
+
+    if (adminUsername === undefined || adminPassword === undefined || userUsername === undefined || userPassword === undefined) {
+        throw new Error("ADMIN_USERNAME, ADMIN_PASSWORD, USER_USERNAME & USER_PASSWORD must be set in environment");
+    }
+    await userCollection.insertMany([
+        { username: adminUsername, password: await bcrypt.hash(adminPassword, saltRounds), role: "ADMIN" },
+        { username: userUsername, password: await bcrypt.hash(userPassword, saltRounds), role: "USER" }
+    ]);
+}
+
+export async function Login(username: string, password: string) {
+    if (username === "" || password === "") {
+        throw new Error("Username and password required");
+    }
+    let user : User | null = await userCollection.findOne<User>({username: username});
+    if (user) {
+        if (await bcrypt.compare(password, user.password!)) {
+            return user;
+        } else {
+            throw new Error("Password incorrect");
+        }
+    } else {
+        throw new Error("User not found");
+    }
+}
+
+
+/*** COLLECTIONS POKEMON & ABILITY ***/
 
 const pokemonCollection: Collection<Pokemon> = client.db("poketeam").collection<Pokemon>("pokemon");
 const abilitiesCollection: Collection<Ability> = client.db("poketeam").collection<Ability>("abilities");
-
-let allPokemonData: Pokemon[] = [];
-
-let allAbilityData: Ability[] = [];
 
 async function FillDatabase() {
     let pokemonTeam = await pokemonCollection.find({}).toArray();
@@ -30,21 +72,19 @@ async function FillDatabase() {
 }
 
 export async function GetPokemon() {
-    return allPokemonData;
+    return await pokemonCollection.find({}).toArray();
 }
 
 export async function GetAbilities() {
-    return allAbilityData;
+    return await abilitiesCollection.find({}).toArray();
 }
 
 export async function GetPokemonByName(pokemonName: string) {
     return await pokemonCollection.findOne<Pokemon>({ name: pokemonName });  
 }
 
-export async function GetAbilityFromAbilityDBByName(abilityName: string) {
-    const result = await abilitiesCollection.findOne<Ability>({name: abilityName});
-    console.log(result);
-    return result;
+export async function GetAbilityFromAbilitiesDatabaseByName(abilityName: string) {
+    return await abilitiesCollection.findOne<Ability>({name: abilityName});
 }
 
 export async function GetAbilityOnPokemonByName(abilityName: string) {
@@ -52,9 +92,10 @@ export async function GetAbilityOnPokemonByName(abilityName: string) {
 }
 
 export async function GetPokemonTeamAbilities() {
-    const teamAbilities: Ability[] = [];
+    const pokemonData: Pokemon[] = await pokemonCollection.find({}).toArray();
+    let teamAbilities: Ability[] = [];
 
-    for (let pokemon of allPokemonData) { teamAbilities.push(pokemon.favoriteAbility); }
+    for (let pokemon of pokemonData) { teamAbilities.push(pokemon.favoriteAbility); }
 
     return teamAbilities;
 }
@@ -66,11 +107,6 @@ export async function UpdatePokemon(pokemon: string, nickname: string, descripti
         active: meta,
         favoriteAbility: ability
     }});
-}
-
-async function LoadData() {
-    allPokemonData = await pokemonCollection.find({}).toArray();
-    allAbilityData = await abilitiesCollection.find({}).toArray();
 }
 
 async function DBExit() {
@@ -87,10 +123,11 @@ export async function DBConnect() {
     try {
         await client.connect();
         await FillDatabase();
-        await LoadData();
+        await createInitialUsers();
         console.log("OK WE GUCCI"); 
         process.on("SIGINT", DBExit);
     } catch (e) {
         console.error(e);
     }
 }
+

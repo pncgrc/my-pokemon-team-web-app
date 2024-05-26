@@ -1,63 +1,31 @@
 import express from "express";
-import { Pokemon, Ability } from "./interfaces/pokemon-interfaces";
-import { DBConnect, GetPokemon, GetAbilities, GetPokemonTeamAbilities, GetPokemonByName, GetAbilityOnPokemonByName, GetAbilityFromAbilityDBByName, UpdatePokemon } from "./database";
+import { Pokemon, Ability } from "./interfaces/types";
+import { DBConnect, GetAbilities, GetPokemonTeamAbilities, GetPokemonByName, GetAbilityOnPokemonByName, GetAbilityFromAbilitiesDatabaseByName, UpdatePokemon } from "./database";
 import dotenv from "dotenv";
+import session from "./session";
+import { secureMiddleware } from "./secureMiddleware";
+import { flashMiddleware } from "./flashMiddleware";
+import { loginRouter } from "./routes/loginRouter";
+import { homeRouter } from "./routes/homeRouter";
+
+
 
 const app = express();
 dotenv.config();
 
-app.set("view engine", "ejs");
-app.use(express.json({ limit: "1mb" }));
-app.use(express.urlencoded({ extended:true}));
-app.set("port", process.env.PORT || 3000);
-app.use(express.static("public"));
+app.set("view engine", "ejs"); // View engine
+app.set("port", process.env.PORT || 3000); // Port definition
 
-let pokeData: Pokemon[] = [];
+app.use(express.json({ limit: "1mb" })); // Post routes
+app.use(express.urlencoded({ extended:true})); // Post routes
+app.use(express.static("public")); // Public folder usage
+app.use(session); // session middleware
+app.use(flashMiddleware);
 
-app.get("/", async (req, res) => {
-    pokeData = await GetPokemon();
+app.use(loginRouter()); // Routes: "/login" (get & post), "/logout" (post)
+app.use(homeRouter()); // Routes: "/"
 
-    const q: string = typeof req.query.q === "string" ? req.query.q : "";
-    const sortBy: string = typeof req.query.sortby === "string" ? req.query.sortby : "id";
-    const sortDirection: string = typeof req.query.sortDirection === "string" ? req.query.sortDirection : "asc";
-
-    let filteredPokeData = pokeData;
-
-    filteredPokeData = filteredPokeData.filter((pokemon) => {
-        return pokemon.name.toLowerCase().includes(q.toLowerCase());
-    });
-
-    filteredPokeData = filteredPokeData.sort((a, b) => {
-        if (sortBy === "id") {
-            return sortDirection === "asc" ? a.order - b.order : b.order - a.order;
-        }
-        else if (sortBy === "name") {
-            return sortDirection === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
-        }
-        else if (sortBy === "type") {
-            return sortDirection === "asc" ? a.type.localeCompare(b.type) : b.type.localeCompare(a.type);
-        }
-        else if (sortBy === "meta") {
-            if (sortDirection === "asc") {
-                return a.active === b.active ? 0 : a.active ? -1 : 1;
-            } else {
-                return a.active === b.active ? 0 : a.active ? 1 : -1;
-            }
-        }
-        else {
-            return 0;
-        }
-    });
-
-    res.render("index", {
-        pokeData: filteredPokeData,
-        q: q,
-        sortby: sortBy,
-        sortdirection: sortDirection
-    });
-});
-
-app.get("/pokemon/:pokemonname", async (req, res) => {
+app.get("/pokemon/:pokemonname", secureMiddleware, async (req, res) => {
     const pokemonName = req.params.pokemonname;
 
     const filteredPokeData: Pokemon | null = await GetPokemonByName(pokemonName);
@@ -67,46 +35,44 @@ app.get("/pokemon/:pokemonname", async (req, res) => {
     }
     else {
         res.render("pokemon-detail", {
-            pokeData: filteredPokeData
+            pokeData: filteredPokeData,
+            user: req.session.user
         });
     }
 });
 
-app.get("/abilities", async (req, res) => {
-    const pokeAbilities: Ability[] = await GetPokemonTeamAbilities();
-
-    res.render("pokemon-abilities", { pokeAbilities });
-});
-
-app.get("/abilities/:abilityname", async (req, res) => {
-    const abilityName = req.params.abilityname;
-
-    const filteredPokeData: Pokemon | null = await GetAbilityOnPokemonByName(abilityName);
-
-    if (filteredPokeData === null) {
-        res.status(404).render("404", { message: "Ability not found" });
-    }
-    else {
-        res.render("ability-detail", {
-            pokeData: filteredPokeData
-        });
-    }
-});
-
-app.get("/edit/:pokemonname", async (req, res) => {
+app.get("/pokemon/:pokemonname/edit", secureMiddleware, async (req, res) => {
     const chosenPokemon = req.params.pokemonname;
 
     const filteredPokeData: Pokemon | null = await GetPokemonByName(chosenPokemon);
     const availableAbilities: Ability[] = await GetAbilities();
 
-    res.render("edit", {
-        pokeData: filteredPokeData,
-        abilityData: availableAbilities,
-        error: ""
-    });
+    if (req.session.user) {
+        if (req.session.user.role === "ADMIN") {
+            res.render("edit", {
+                pokeData: filteredPokeData,
+                abilityData: availableAbilities,
+                error: "",
+                user: req.session.user
+            });
+        }
+        else if (req.session.user.role === "USER") {
+            res.redirect("/");
+        }
+    
+    }
+    else {
+        res.render("edit", {
+            pokeData: filteredPokeData,
+            abilityData: availableAbilities,
+            error: "",
+            user: req.session.user
+        });
+    }
+    
 });
 
-app.post("/edit/:pokemonname", async (req, res) => {
+app.post("/pokemon/:pokemonname/edit", async (req, res) => {
     const chosenPokemon = req.params.pokemonname;
     const filteredPokeData: Pokemon | null = await GetPokemonByName(chosenPokemon);
     const availableAbilities: Ability[] = await GetAbilities();
@@ -116,13 +82,15 @@ app.post("/edit/:pokemonname", async (req, res) => {
     let meta: boolean = req.body.meta === "Yes" ? true : false;
     let ability: string = req.body.ability;
 
-    const updatedAbility: Ability | null = await GetAbilityFromAbilityDBByName(ability);
+    const updatedAbility: Ability | null = await GetAbilityFromAbilitiesDatabaseByName(ability);
 
     if (nickname === "" || description === "") {
         res.render("edit", { 
             pokeData: filteredPokeData,
             abilityData: availableAbilities,
-            error: "All fields are required!"} );
+            error: "All fields are required!",
+            user: req.session.user
+        });
     }
     else if (updatedAbility === null) {
         res.status(404).render("404", { message: "Something went wrong" });
@@ -132,12 +100,39 @@ app.post("/edit/:pokemonname", async (req, res) => {
     }
 });
 
+app.get("/abilities", secureMiddleware, async (req, res) => {
+    const pokeAbilities: Ability[] = await GetPokemonTeamAbilities();
+
+    res.render("pokemon-abilities", { pokeAbilities: pokeAbilities, user: req.session.user, });
+});
+
+app.get("/abilities/:abilityname", secureMiddleware, async (req, res) => {
+    const abilityName = req.params.abilityname;
+
+    const filteredPokeData: Pokemon | null = await GetAbilityOnPokemonByName(abilityName);
+
+    if (filteredPokeData === null) {
+        res.status(404).render("404", { message: "Ability not found" });
+    }
+    else {
+        res.render("ability-detail", {
+            pokeData: filteredPokeData,
+            user: req.session.user
+        });
+    }
+});
 
 app.use((req, res, next) => {
     res.status(404).render("404", { message: "Page not found" });
 });
 
 app.listen(app.get("port"), async () => {
-    await DBConnect();
-    console.log( "[server] http://localhost:" + app.get("port"));
+    try {
+        await DBConnect();
+        console.log( "[server] http://localhost:" + app.get("port"));
+    } catch (e) {
+        console.log(e);
+        process.exit(1);
+    }
+    
 });

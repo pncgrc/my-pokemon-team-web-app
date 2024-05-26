@@ -16,8 +16,10 @@
     --type-color-rock: #a38c21;
 }
 
-html, body {
-    height: 100vh;
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 body {
@@ -45,10 +47,34 @@ a:hover, a:active {
     text-decoration: underline;
 }
 
+@keyframes fadeOut {
+    25% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+.error {
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #ff756b;
+    animation: fadeOut 3s forwards;
+}
+
+.success {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #9cff6b;
+    animation: fadeOut 3s forwards;
+}
+
 /* HEADER & NAV */
 
 header {
-    padding: 1.5rem calc((100% - 1200px)/2);
+    padding: 2rem calc((100% - 1200px)/2);
     display: flex;
     background-color: white;
 }
@@ -95,10 +121,6 @@ nav ul li a:hover {
 main {
     margin: 0 auto;
     padding: 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
     max-width: 1200px;
 }
 
@@ -109,9 +131,27 @@ footer {
     font-size: 9px;
     text-align: center;
     padding: 25px 15px;
+    margin-top: auto;
 }
 
 /* INDEX */
+
+.logout-section {
+    display: inline;
+    margin-left: auto;
+    font-size: 0.7rem;
+    position: absolute;
+    top: 0;
+    right: 15px;
+}
+
+.logout-section button {
+    font-size: 0.7rem;
+}
+
+.logout-section p, .logout-section form {
+    display: inline;
+}
 
 button {
     border: 3px solid var(--main-color-blue);
@@ -224,6 +264,13 @@ button:active {
 
 /* ABILITIES */
 
+#pokemon-abilities {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
 .article-ability {
     background-color: #fff;
     border: 2px solid #ddd;
@@ -285,11 +332,6 @@ button:active {
 }
 
 /* EDIT */
-
-.error {
-    padding: 15px;
-    background-color: #ff756b;
-}
 
 #edit-form {
     display: flex;
@@ -366,14 +408,6 @@ button[type="submit"] {
 .rock {
     background-color: var(--type-color-rock);
     color:  white;
-}
-
-/* RANDOM CLASS */
-
-.img-block {
-    display: block;
-    width: 70%;
-    margin: 0 auto;
 }
 
 /* MEDIA QUERIES */
