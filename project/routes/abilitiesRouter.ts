@@ -9,8 +9,7 @@ export function abilitiesRouter() {
 
     router.get("/abilities", secureMiddleware, async (req, res) => {
         const pokeAbilities: Ability[] = await GetPokemonTeamAbilities();
-    
-        res.render("pokemon-abilities", { pokeAbilities: pokeAbilities, user: req.session.user, });
+        res.render("pokemon-abilities", { pokeAbilities: pokeAbilities, user: req.session.user });
     });
     
     router.get("/abilities/:abilityname", secureMiddleware, async (req, res) => {
