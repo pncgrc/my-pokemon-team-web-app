@@ -1,6 +1,6 @@
 import express from "express";
 import { User } from "../interfaces/types";
-import { Login } from "../database";
+import { Login, RegisterUser } from "../database";
 
 export function loginRouter() {
     const router = express.Router();
@@ -22,9 +22,8 @@ export function loginRouter() {
             delete user.password; 
             req.session.user = user;
             req.session.message = {type: "success", message: "Login successful"};
-            console.log(req.session.message);
             res.redirect("/");
-        } catch (e : any) {
+        } catch (e: any) {
             req.session.message = {type: "error", message: e.message};
             res.redirect("/login");
         }
@@ -34,6 +33,28 @@ export function loginRouter() {
         req.session.destroy(() => {
             res.redirect("/login");
         });
+    });
+
+    router.get("/register", (req, res) => {
+        if (req.session.user) {
+            res.redirect("/");
+        }
+        else {
+            res.render("register");
+        }    
+    });
+    
+    router.post("/register", async (req, res) => {
+        const username: string = req.body.username;
+        const password: string = req.body.password;
+        try {
+            await RegisterUser(username, password);
+            req.session.message = {type: "success", message: "Registration successful"};
+            res.redirect("/login");
+        } catch (e: any) {
+            req.session.message = {type: "error", message: e.message};
+            res.redirect("/register");
+        }
     });
 
     return router;

@@ -14,7 +14,7 @@ const userCollection = client.db("login-express").collection<User>("users");
 
 const saltRounds: number = 10;
 
-async function createInitialUsers() {
+async function CreateInitialUsers() {
     if (await userCollection.countDocuments() > 0) {
         return;
     }
@@ -46,6 +46,18 @@ export async function Login(username: string, password: string) {
         }
     } else {
         throw new Error("User not found");
+    }
+}
+
+export async function RegisterUser(username: string, password: string) {
+    if (username === "" || password === "") {
+        throw new Error("Username and password required");
+    }
+    let user: User | null = await userCollection.findOne<User>({username: username});
+    if (user) {
+        throw new Error("User already exists");
+    } else {
+        await userCollection.insertOne({username: username, password: await bcrypt.hash(password, saltRounds), role: "USER"});
     }
 }
 
@@ -123,7 +135,7 @@ export async function DBConnect() {
     try {
         await client.connect();
         await FillDatabase();
-        await createInitialUsers();
+        await CreateInitialUsers();
         console.log("OK WE GUCCI"); 
         process.on("SIGINT", DBExit);
     } catch (e) {

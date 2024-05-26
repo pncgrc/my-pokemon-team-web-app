@@ -2,7 +2,12 @@
 <%- include("./partials/logout-section") %>
 
 <article class="pokemon-detail">
-    <h2>#<%= pokeData.order %> <%= pokeData.name%></h2>
+    <h2>
+        #<%= pokeData.order %> <%= pokeData.name%>
+        <% if (user.role === "ADMIN") { %>
+            (<a href="/pokemon/<%= pokeData.name %>/edit">Edit</a>)
+        <% } %>
+    </h2>
         <img src="<%= pokeData.imageUrl %>" alt="<%= pokeData.name%>" width="250px">
     <ul>
         <li>Nickname: <%= pokeData.nickname%></li>
