@@ -10,7 +10,7 @@ export function homeRouter() {
 
         const q: string = typeof req.query.q === "string" ? req.query.q : "";
         const sortBy: string = typeof req.query.sortby === "string" ? req.query.sortby : "id";
-        const sortDirection: string = typeof req.query.sortDirection === "string" ? req.query.sortDirection : "asc";
+        const sortDirection: string = typeof req.query.sortdirection === "string" ? req.query.sortdirection : "asc";
     
         const pokeData: Pokemon[] = await GetPokemon();
         let filteredPokeData: Pokemon[] = pokeData;
@@ -40,10 +40,18 @@ export function homeRouter() {
                 return 0;
             }
         });
+
+        const sortFields = [
+            { value: 'name', text: 'Name' },
+            { value: 'id', text: 'Pokédex ID'},
+            { value: 'type', text: 'Type' },
+            { value: 'meta', text: 'Meta pick' },
+        ];
     
         res.render("index", {
             pokeData: filteredPokeData,
             q: q,
+            sortFields: sortFields,
             sortby: sortBy,
             sortdirection: sortDirection,
             user: req.session.user,

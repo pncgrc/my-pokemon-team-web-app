@@ -173,6 +173,14 @@ button:active {
     transform: translateY(2px);
 }
 
+.arrow {
+    margin-left: 5px;
+}
+
+.invisible-arrow {
+    visibility: hidden;
+}
+
 .pokemon-table {
     width: 100%;
     margin: 50px auto;

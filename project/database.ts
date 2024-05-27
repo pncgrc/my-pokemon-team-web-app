@@ -121,16 +121,6 @@ export async function UpdatePokemon(pokemon: string, nickname: string, descripti
     }});
 }
 
-async function DBExit() {
-    try {
-        await client.close();
-        console.log("Disconnected from database");
-    } catch (error) {
-        console.error("Error while disconnecting from database:", error);
-    }
-    process.exit(0);
-}
-
 export async function DBConnect() {
     try {
         await client.connect();
@@ -143,3 +133,12 @@ export async function DBConnect() {
     }
 }
 
+async function DBExit() {
+    try {
+        await client.close();
+        console.log("Disconnected from database");
+    } catch (error) {
+        console.error("Error while disconnecting from database:", error);
+    }
+    process.exit(0);
+}

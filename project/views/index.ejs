@@ -15,10 +15,12 @@
     <thead>
         <tr>
             <th>Picture</th>
-            <th><a href="?q=<%= q %>&sortby=name&sortdirection=asc">Name</a></th>
-            <th><a href="?q=<%= q %>&sortby=id&sortdirection=asc">Pokédex ID</a></th>
-            <th><a href="?q=<%= q %>&sortby=type&sortdirection=asc">Type</a></th>
-            <th><a href="?q=<%= q %>&sortby=meta&sortdirection=asc">Meta pick</a></th>
+            <% for (let field of sortFields) { %>
+                <th>
+                    <a href="?q=<%= q %>&sortby=<%= field.value %>&sortdirection=<%= field.value === sortby ? sortdirection === 'asc' ? 'desc' : 'asc' : 'asc' %>">
+                        <%= field.text %><% if (field.value === sortby) { %><span class="arrow"><%= sortdirection === 'asc' ? '▲' : '▼' %></span><% } %></a><% if (field.value != sortby) { %><span class="invisible-arrow">▲</span><% } %>
+                </th>
+            <% } %>
             <% if (user.role === "ADMIN") { %>
                 <th>Edit</th>
             <% } %>
