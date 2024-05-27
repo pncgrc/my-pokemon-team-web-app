@@ -32,6 +32,7 @@ body {
 
 h2 {
     margin-bottom: 50px;
+    flex: 1 1 auto;
 }
 
 p {
@@ -137,24 +138,39 @@ footer {
     margin-top: auto;
 }
 
+section {
+    padding: 20px;
+    margin: auto;
+    width: 100%;
+}
+
+input, textarea, select { padding: 5px; }
+
 /* INDEX */
 
 .logout-section {
     display: inline;
+    width: auto;
     margin-left: auto;
     font-size: 0.7rem;
     position: absolute;
-    top: 0;
+    top: 15px;
     right: 15px;
+    padding: 0 !important;
 }
 
 .logout-section button {
     font-size: 0.7rem;
+    margin: 0 !important;
 }
 
 .logout-section p, .logout-section form {
     display: inline;
 }
+
+fieldset { border: 0; }
+
+.mobile-only { display: none; }
 
 button {
     border: 3px solid var(--main-color-blue);
@@ -178,6 +194,7 @@ button:active {
 }
 
 .invisible-arrow {
+    margin-left: 5px;
     visibility: hidden;
 }
 
@@ -315,7 +332,7 @@ button:active {
     border: 2px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin:0 auto 20px auto;
     padding: 20px;
     max-width: 600px;
     width: 100%;
@@ -346,12 +363,14 @@ button:active {
 #edit-form {
     display: flex;
     flex-direction: column;
+    flex-shrink: 1;
     max-width: 800px;
     margin-top: 15px;
 }
 
 .form-group {
     display: flex;
+    flex-shrink: 1;
     align-items: center;
     margin: 15px 0;
 }
@@ -368,8 +387,8 @@ button:active {
 }
 
 .form-group input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     background:white;
     border-radius: 5px;
     border: 2px solid #555;
@@ -380,7 +399,7 @@ button[type="submit"] {
     margin: 15px 0;
 }
 
-#register {
+#register-message {
     margin-top: 100px;
 }
 
@@ -434,10 +453,10 @@ button[type="submit"] {
 
 /* MEDIA QUERIES */
 
-@media (max-width: 730px) {
+@media (max-width: 800px) {
 
     header {
-        padding: 1rem;
+        padding: 2rem 1rem 1rem 1rem;
     }
 
     #logo {
@@ -449,8 +468,17 @@ button[type="submit"] {
         font-size: 1rem;
     }
 
+    .logout-section {
+        font-size: 0.5rem;
+    }
+    
+    .logout-section button {
+        font-size: 0.5rem;
+    }
+
     main {
         padding: 1rem;
+        width: 100%;
     }
 
     nav ul {
@@ -475,6 +503,14 @@ button[type="submit"] {
         margin: 5px 0;
         padding: 8px;
     }
+
+    #sorting { margin-top: 50px; }
+
+    #search { margin-top: 20px; }
+
+    .mobile-only { display: block; }
+
+    .desktop-only { display: none; }
 
     table {
         border: 0;
@@ -503,6 +539,10 @@ button[type="submit"] {
         font-size: .8em;
         text-align: right;
       }
+
+      .pokemon-table img {
+        width: 30%;
+    }
       
       table td::before {
         content: attr(data-label);
@@ -511,6 +551,53 @@ button[type="submit"] {
         font-weight: bold;
         text-transform: uppercase;
       }
+
+      .edit-img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    
+    #edit-form {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 1;
+        margin-top: 15px;
+    }
+    #edit-form input, #edit-form textarea, #edit-form select {
+        width: 100%;
+    }
+    
+    .form-group {
+        display: block;
+        align-items: center;
+        margin: 15px 0;
+    }
+    
+    .form-group label {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .form-group input, .form-group textarea, .form-group select {
+        width: 80%;
+        margin-top: 5px;
+    }
+    
+    .form-group input[type="checkbox"] {
+        border-radius: 5px;
+        border: 2px solid #555;
+    }
+    
+    #edit-form button[type="submit"], #register button[type="submit"], #login button[type="submit"] {
+        width: 80%;
+        padding: 5px;
+        font-size: 1em;
+        cursor: pointer;
+        margin: 35px auto 0 auto;
+    }
 
       .type {
         width: 50%;

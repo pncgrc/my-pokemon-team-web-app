@@ -1,15 +1,49 @@
 <%- include("./partials/header") %>
 <%- include("./partials/logout-section") %>
-
 <% if (message) { %>
     <p class="<%= message.type %>"><%= message.message %>. Logged in as <%= user.username %></p>
 <% } %>
 
-<form action="/" method="get">
-    <label for="search">Search for a name:</label>
-    <input type="text" id="search" name="q" value="<%= q %>">
-    <button type="submit">Search</button>
+<form action="/" method="get" id="sorting">
+        <label for="search">Search for a name:</label>
+        <input type="text" id="search" name="q" value="<%= q %>">
+        <button type="submit" class="desktop-only">Search</button>
+
+    <fieldset class="mobile-only">
+        <select name="sortby">
+            <% for (let field of sortFields) { %>
+                <option value="<%= field.value %>" <% if (sortby === field.value) { %>selected<% } %>><%= field.text %></option> 
+            <% } %>
+        </select>
+        <select name="sortdirection">
+            <option value="<%= sortdirection %>"><% if (sortdirection === "asc" || sortdirection === "") { %>Ascending<% } else { %>Descending<% } %></option>
+            <% if (sortdirection === "asc") { %>
+                <option value="desc">Descending</option>
+            <% } else { %>
+                <option value="asc">Ascending</option>
+            <% } %>
+        </select>
+        <button type="submit">Filter</button>
+    </fieldset>
 </form>
+
+<!--<form action="/" method="get">
+    <select name="sortby">
+        <% for (let field of sortFields) { %>
+            <option value="<%= field.value %>" <% if (sortby === field.value) { %>selected<% } %>><%= field.text %></option> 
+        <% } %>
+    </select>
+    <select name="sortdirection">
+        <option value="<%= sortdirection %>"><% if (sortdirection === "asc" || sortdirection === "") { %>Ascending<% } else { %>Descending<% } %></option>
+        <% if (sortdirection === "asc") { %>
+            <option value="desc">Descending</option>
+        <% } else { %>
+            <option value="asc">Ascending</option>
+        <% } %>
+    </select>
+    <button type="submit">Sort</button>
+</form>-->
+
 
 <table class="pokemon-table">
     <thead>

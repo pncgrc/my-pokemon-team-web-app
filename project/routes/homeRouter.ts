@@ -45,9 +45,9 @@ export function homeRouter() {
             { value: 'name', text: 'Name' },
             { value: 'id', text: 'Pokédex ID'},
             { value: 'type', text: 'Type' },
-            { value: 'meta', text: 'Meta pick' },
+            { value: 'meta', text: 'Meta pick' }
         ];
-    
+
         res.render("index", {
             pokeData: filteredPokeData,
             q: q,
