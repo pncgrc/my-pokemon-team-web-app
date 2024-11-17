@@ -188,5 +188,24 @@
             "accuracy": 100,
             "description": "A physical attack in which the user charges and slams into the target with its whole body."
         }
+    },
+    {
+        "id": 122,
+        "name": "The Ethical Hacker",
+        "nickname": "Hacked",
+        "description": "Revealed a security flaw in an ethical way, their wisdom message: 'Psst. You are exposing your database credentials on Github-'",
+        "order": 122,
+        "active": true,
+        "imageUrl": "https://miro.medium.com/v2/resize:fit:1280/0*ngAthWxOvKZHvsw9",
+        "type": "hacker",
+        "hobbies": ["hacking", "programming"],
+        "favoriteAbility": {
+            "id": 122,
+            "name": "Ethical hack",
+            "type": "hack",
+            "power": 100,
+            "accuracy": 100,
+            "description": "The reveal of a security flaw within an online application without causing harm."
+        }
     }
 ]
