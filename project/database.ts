@@ -5,7 +5,10 @@ import bcrypt from "bcrypt";
 
 dotenv.config();
 
-export const MONGODB_URI = process.env.MONGO_URI ?? "mongodb+srv://s080037:bRW1UPhSbMMGfqF2@project-webdev.od9yc1q.mongodb.net/?retryWrites=true&w=majority&appName=Project-Webdev";
+export const MONGODB_URI = process.env.MONGO_URI;
+if (!MONGODB_URI) {
+    throw new Error("MONGO_URI is not defined in environment variables");
+  }
 export const client = new MongoClient(MONGODB_URI);
 
 /*** COLLECTION USERS ***/
