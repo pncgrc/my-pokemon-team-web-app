@@ -201,7 +201,7 @@
         "hobbies": ["hacking", "programming"],
         "favoriteAbility": {
             "id": 152,
-            "name": "Ethical hack",
+            "name": "Ethical hacking",
             "type": "hacker",
             "power": 100,
             "accuracy": 100,
