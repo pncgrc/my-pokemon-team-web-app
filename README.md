@@ -11,4 +11,4 @@ password: user
 - Try visiting a page that doesn’t exist ([Example 1](https://project-webdev-ponci.onrender.com/pokemon/oisgjk) or [Example 2](https://project-webdev-ponci.onrender.com/oisgjk))
 - Enter a wrong password or forget to fill in a required field when updating a Pokémon (and watch the bottom of your screen).
 
-**[Link to app](https://project-webdev-ponci.onrender.com)** (Might Render a while to load the website)
+**[Link to app](https://project-webdev-ponci.onrender.com)** (Might take Render a while to load the website)
