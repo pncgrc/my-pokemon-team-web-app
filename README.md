@@ -1,11 +1,14 @@
-# Welkom op mijn project repo!
-Dit is het eindresultaat van mijn project Webontwikkeling 2024 bij AP Hogeschool, studierichting Graduaat Programmeren 1ste jaar
-### Cool things to check out:
-- Verklein je browser venster of bezoek de app op je smartphone! Support voor kleinere schermen is geimplementeerd.
-- Elke user die aangemaakt wordt, krijgt automatisch role user. Je kan de app bekijken als admin door in te loggen met username admin en guess what the password is... :)
-- Surf eens naar eens pagina die niet zou bestaan ([Voorbeeld 1](https://project-webdev-ponci.onrender.com/pokemon/oisgjk) of [Voorbeeld 2](https://project-webdev-ponci.onrender.com/oisgjk))
-- Geef een fout watchwoord in, of vergeet een verplicht veld in te vullen bij het updaten van een Pokémon (en let op de onderkant van je scherm).
+# Welcome to my project repo!
+This is the final result of my Web Development 2024 project at AP University College, Graduate Program in Programming – 1st year
 
- 
- 
-**[Link naar app](https://project-webdev-ponci.onrender.com)**
+## If you don't feel like registering, you can use the standard account:
+username: user
+password: user
+
+### Cool things to check out:
+- Resize your browser window or visit the app on your smartphone! Support for smaller screens has been implemented.
+- Every user that’s created automatically gets the “user” role. You can view the app as an admin by logging in with the username **admin** — and guess what the password is... :)
+- Try visiting a page that doesn’t exist ([Example 1](https://project-webdev-ponci.onrender.com/pokemon/oisgjk) or [Example 2](https://project-webdev-ponci.onrender.com/oisgjk))
+- Enter a wrong password or forget to fill in a required field when updating a Pokémon (and watch the bottom of your screen).
+
+**[Link to app](https://project-webdev-ponci.onrender.com)** (Might Render a while to load the website)
